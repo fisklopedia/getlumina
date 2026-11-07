@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <title>Lumina — Illuminate Your Mind</title>
+
+  <!-- ===== PWA MANIFEST ===== -->
+  <link rel="manifest" href="./manifest.json" />
+
+  <!-- ===== FAVICONS ===== -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./icon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+  <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png" />
+  <link rel="apple-touch-icon" sizes="167x167" href="./icon-167.png" />
+  <link rel="apple-touch-icon" sizes="152x152" href="./icon-152.png" />
+  <link rel="apple-touch-icon" sizes="120x120" href="./icon-120.png" />
+  <link rel="shortcut icon" href="./favicon.ico" />
+
+  <!-- ===== THEME & DESCRIPTION ===== -->
+  <meta name="theme-color" content="#6366f1" />
+  <meta name="msapplication-TileColor" content="#6366f1" />
+  <meta name="description" content="Lumina — Platform belajar interaktif dengan AI Coach, gamifikasi misi, treasure hunt, dan asesmen. Illuminate Your Mind." />
+  <meta name="author" content="FISKLOPEDIA" />
+
+  <!-- ===== iOS PWA ===== -->
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Lumina" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <!-- ===== OPEN GRAPH (share preview) ===== -->
+  <meta property="og:title" content="Lumina — Illuminate Your Mind" />
+  <meta property="og:description" content="Platform belajar interaktif dengan AI Coach, gamifikasi misi, treasure hunt, dan asesmen." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="./og-image.png" />
+  <meta property="og:url" content="./" />
+
+  <!-- ===== TWITTER CARD ===== -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Lumina — Illuminate Your Mind" />
+  <meta name="twitter:description" content="Platform belajar interaktif dengan AI Coach, gamifikasi misi, treasure hunt, dan asesmen." />
+  <meta name="twitter:image" content="./og-image.png" />
+
+  <style>
+    :root {
+      /* Lumina brand palette — Indigo-Violet */
+      --lumina-indigo: #6366f1;
+      --lumina-violet: #8b5cf6;
+      --lumina-light-violet: #a78bfa;
+      --lumina-deep-indigo: #4f46e5;
+      --lumina-glow: rgba(139, 92, 246, 0.4);
+      --lumina-bg-dark: #0b0d14;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--lumina-bg-dark);
+      overflow: hidden;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* Safe area untuk iPhone X+ notch & home indicator */
+    .iframe-container {
+      width: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+      box-sizing: border-box;
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ===== TOMBOL INSTALL ===== */
+    #lumina-install-btn {
+      position: fixed;
+      bottom: calc(env(safe-area-inset-bottom) + 20px);
+      right: 20px;
+      z-index: 9999;
+      padding: 14px 22px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--lumina-indigo), var(--lumina-violet));
+      color: white;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      box-shadow: 0 6px 24px var(--lumina-glow);
+      display: none;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: luminaInstallPulse 2.5s ease-in-out infinite;
+    }
+    #lumina-install-btn:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 8px 30px var(--lumina-glow);
+    }
+    #lumina-install-btn:active {
+      transform: scale(0.96);
+    }
+    @keyframes luminaInstallPulse {
+      0%, 100% { box-shadow: 0 6px 24px var(--lumina-glow); }
+      50%      { box-shadow: 0 8px 32px rgba(139, 92, 246, 0.7); }
+    }
+    @media (max-width: 768px) {
+      #lumina-install-btn {
+        bottom: calc(env(safe-area-inset-bottom) + 16px);
+        right: 16px;
+        padding: 12px 18px;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* ===== LOADING SPLASH — Lumina orb animation ===== */
+    #lumina-splash {
+      position: fixed;
+      inset: 0;
+      background: var(--lumina-bg-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      z-index: 10000;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+      overflow: hidden;
+    }
+    #lumina-splash::before {
+      /* Aurora gradient background */
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 20%, rgba(99, 102, 241, 0.15), transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(139, 92, 246, 0.12), transparent 60%);
+      animation: luminaAuroraDrift 12s ease-in-out infinite alternate;
+    }
+    @keyframes luminaAuroraDrift {
+      0%   { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(2%, -2%) scale(1.05); }
+    }
+    #lumina-splash.hide {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .splash-orb {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      z-index: 1;
+      animation: luminaOrbPop 1s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+                 luminaOrbGlow 2.5s ease-in-out infinite alternate 1s;
+    }
+    @keyframes luminaOrbPop {
+      0%   { opacity: 0; transform: scale(0.4); }
+      60%  { opacity: 1; transform: scale(1.1); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes luminaOrbGlow {
+      from { filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.5)); }
+      to   { filter: drop-shadow(0 0 50px rgba(139, 92, 246, 0.9)); }
+    }
+    .splash-orb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    /* Sparkle rays around orb */
+    .splash-orb::after {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        rgba(255, 255, 255, 0.3) 5deg,
+        transparent 10deg,
+        transparent 85deg,
+        rgba(255, 255, 255, 0.3) 90deg,
+        transparent 95deg,
+        transparent 175deg,
+        rgba(255, 255, 255, 0.3) 180deg,
+        transparent 185deg,
+        transparent 265deg,
+        rgba(255, 255, 255, 0.3) 270deg,
+        transparent 275deg
+      );
+      border-radius: 50%;
+      animation: luminaRaysSpin 8s linear infinite;
+      opacity: 0.6;
+    }
+    @keyframes luminaRaysSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    .splash-title {
+      position: relative;
+      z-index: 1;
+      color: white;
+      font-size: 2.4rem;
+      font-weight: 900;
+      letter-spacing: 8px;
+      margin: 0;
+      background: linear-gradient(90deg, #c4b5fd, #a78bfa, #c4b5fd);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: luminaShineText 3s linear infinite,
+                 luminaTitleFadeIn 1s ease 0.4s both;
+    }
+    @keyframes luminaShineText {
+      to { background-position: 200% center; }
+    }
+    @keyframes luminaTitleFadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .splash-tagline {
+      position: relative;
+      z-index: 1;
+      color: rgba(167, 139, 250, 0.85);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 4px;
+      margin: 0;
+      text-transform: uppercase;
+      animation: luminaTitleFadeIn 1s ease 0.8s both;
+    }
+    .splash-tagline.id {
+      color: rgba(196, 181, 253, 0.7);
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: none;
+      font-style: italic;
+    }
+
+    .splash-spinner {
+      position: relative;
+      z-index: 1;
+      width: 24px;
+      height: 24px;
+      border: 2px solid rgba(255,255,255,0.15);
+      border-top-color: var(--lumina-light-violet);
+      border-radius: 50%;
+      animation: luminaSpin 0.9s linear infinite;
+      margin-top: 8px;
+    }
+    @keyframes luminaSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ===== OFFLINE BANNER ===== */
+    #lumina-offline-banner {
+      position: fixed;
+      top: env(safe-area-inset-top);
+      left: 0;
+      right: 0;
+      z-index: 10001;
+      background: linear-gradient(135deg, #ef4444, #f87171);
+      color: white;
+      padding: 8px 16px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transform: translateY(-100%);
+      transition: transform 0.3s ease;
+    }
+    #lumina-offline-banner.show {
+      transform: translateY(0);
+    }
+
+    /* ===== iOS HINT POPUP ===== */
+    #lumina-ios-hint {
+      position: fixed;
+      bottom: calc(env(safe-area-inset-bottom) + 80px);
+      left: 16px;
+      right: 16px;
+      z-index: 10000;
+      background: linear-gradient(135deg, #1a1f30, #141826);
+      color: #e6e9f2;
+      padding: 14px 16px;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      animation: luminaHintSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    @keyframes luminaHintSlideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== LOADING SPLASH ===== -->
+  <div id="lumina-splash">
+    <div class="splash-orb">
+      <img src="./icon-512.png" alt="Lumina" />
+    </div>
+    <h1 class="splash-title">LUMINA</h1>
+    <p class="splash-tagline">Illuminate Your Mind</p>
+    <p class="splash-tagline id">Cahaya Pengetahuan</p>
+    <div class="splash-spinner"></div>
+  </div>
+
+  <!-- ===== OFFLINE BANNER ===== -->
+  <div id="lumina-offline-banner">📡 Anda sedang offline — beberapa fitur mungkin terbatas</div>
+
+  <!-- ===== IFRAME APLIKASI ===== -->
+  <div class="iframe-container">
+    <iframe
+      id="app"
+      src="https://script.google.com/macros/s/AKfycbymtZIxJfEt1oLN2-OBWwy8OiRmn7-2iHzcPTJyhEkFaPMjOX-mFA9PZqBs9Zls7AcEIA/exec"
+      scrolling="yes"
+      allowfullscreen="true"
+      webkitallowfullscreen="true"
+      mozallowfullscreen="true"
+      allow="fullscreen; camera; microphone; display-capture; geolocation; clipboard-read; clipboard-write;">
+    </iframe>
+  </div>
+
+  <!-- ===== TOMBOL INSTALL ===== -->
+  <button id="lumina-install-btn" aria-label="Pasang Lumina">
+    💡 Pasang Lumina
+  </button>
+
+  <!-- ===== SW REGISTRATION ===== -->
+  <script>
+    (function () {
+      if (!('serviceWorker' in navigator)) return;
+
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('./sw.js', { scope: './' })
+          .then(function (reg) {
+            console.log('[Lumina PWA] Service Worker registered. Scope:', reg.scope);
+
+            // Listen untuk update SW
+            reg.addEventListener('updatefound', function () {
+              var newWorker = reg.installing;
+              if (!newWorker) return;
+              newWorker.addEventListener('statechange', function () {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  console.log('[Lumina PWA] New version available. Reloading...');
+                  setTimeout(function () {
+                    window.location.reload();
+                  }, 500);
+                }
+              });
+            });
+
+            // Cek update tiap aplikasi dibuka kembali dari background
+            window.addEventListener('focus', function () {
+              reg.update();
+            });
+          })
+          .catch(function (err) {
+            console.warn('[Lumina PWA] SW registration failed (non-fatal):', err.message);
+          });
+      });
+
+      // ===== INSTALL PROMPT (Android Chrome) =====
+      var deferredPrompt = null;
+      var installBtn = document.getElementById('lumina-install-btn');
+
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        deferredPrompt = e;
+
+        var isStandalone =
+          window.matchMedia('(display-mode: standalone)').matches ||
+          window.navigator.standalone === true;
+        if (isStandalone) return;
+
+        installBtn.style.display = 'flex';
+        console.log('[Lumina PWA] App installable. Tombol install ditampilkan.');
+      });
+
+      installBtn.addEventListener('click', function () {
+        if (!deferredPrompt) {
+          showIOSHint();
+          return;
+        }
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function (choice) {
+          if (choice.outcome === 'accepted') {
+            console.log('[Lumina PWA] User accepted install');
+            installBtn.style.display = 'none';
+          } else {
+            console.log('[Lumina PWA] User dismissed install');
+          }
+          deferredPrompt = null;
+        });
+      });
+
+      window.addEventListener('appinstalled', function () {
+        console.log('[Lumina PWA] App installed successfully');
+        installBtn.style.display = 'none';
+      });
+
+      // ===== iOS HINT =====
+      function showIOSHint() {
+        if (sessionStorage.getItem('lumina_ios_hint_shown')) return;
+        sessionStorage.setItem('lumina_ios_hint_shown', '1');
+
+        var existing = document.getElementById('lumina-ios-hint');
+        if (existing) existing.remove();
+
+        var hint = document.createElement('div');
+        hint.id = 'lumina-ios-hint';
+        hint.innerHTML =
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-weight:700;">' +
+          '💡 Pasang Lumina di iPhone</div>' +
+          '<div style="color:#8b93a7;">Tap <b>Share</b> ' +
+          '<span style="font-size:1.1em;">⎋</span> di Safari → pilih <b>Add to Home Screen</b></div>' +
+          '<button onclick="this.parentElement.remove()" style="margin-top:10px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;border:none;padding:8px 14px;border-radius:8px;font-weight:600;cursor:pointer;width:100%;font-family:inherit;">Mengerti</button>';
+        document.body.appendChild(hint);
+        setTimeout(function () {
+          if (hint.parentElement) hint.remove();
+        }, 20000);
+      }
+
+      // Deteksi iOS — tampilkan hint otomatis setelah 5 detik
+      var isIOS = /(iphone|ipad|ipod)/i.test(navigator.userAgent);
+      var isStandalone =
+        window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone === true;
+      if (isIOS && !isStandalone) {
+        setTimeout(function () {
+          if (!sessionStorage.getItem('lumina_ios_hint_shown')) {
+            showIOSHint();
+          }
+        }, 5000);
+      }
+
+      // ===== ONLINE/OFFLINE INDICATOR =====
+      var offlineBanner = document.getElementById('lumina-offline-banner');
+      window.addEventListener('online', function () {
+        offlineBanner.classList.remove('show');
+      });
+      window.addEventListener('offline', function () {
+        offlineBanner.classList.add('show');
+      });
+      if (!navigator.onLine) {
+        offlineBanner.classList.add('show');
+      }
+
+      // ===== HIDE SPLASH saat iframe selesai load =====
+      var iframe = document.getElementById('app');
+      var splash = document.getElementById('lumina-splash');
+      var splashHidden = false;
+      function hideSplash() {
+        if (splashHidden) return;
+        splashHidden = true;
+        splash.classList.add('hide');
+        setTimeout(function () {
+          if (splash.parentElement) splash.remove();
+        }, 700);
+      }
+      iframe.addEventListener('load', hideSplash);
+      // Fallback: hide splash setelah 6 detik kalau iframe lambat
+      setTimeout(hideSplash, 6000);
+    })();
+  </script>
+</body>
+</html>

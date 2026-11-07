@@ -1,0 +1,226 @@
+/* ============================================================
+ * LUMINA — CSS THEME PATCH
+ * ============================================================
+ * Patch ini mengubah tema aplikasi dari EMPOWER (ungu-cyan)
+ * menjadi Lumina (indigo-violet) yang lebih sophisticated.
+ *
+ * Cara pakai:
+ * 1. Buka file CssStyle HTML di Apps Script
+ * 2. Replace variabel warna di :root dengan blok di bawah
+ * 3. Save & deploy ulang
+ *
+ * Atau tambahkan seluruh blok ini di akhir CssStyle sebelum </style>
+ * (akan override tema lama karena CSS cascade).
+ * ============================================================ */
+
+:root {
+  /* ===== LUMINA BRAND PALETTE — Indigo-Violet ===== */
+  --primary: #6366f1;              /* indigo */
+  --primary-hover: #4f46e5;        /* deep indigo */
+  --primary-glow: rgba(99, 102, 241, 0.4);
+  --accent: #8b5cf6;               /* violet */
+  --accent-light: #a78bfa;         /* light violet */
+  --accent-glow: rgba(139, 92, 246, 0.4);
+
+  /* Status colors (tetap, cuma disesuaikan ke lumina palette) */
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #f87171;
+
+  /* Background tiers (3-tier surface system) */
+  --bg-main: #0b0d14;              /* terdalam - body */
+  --bg-elevated: #141826;          /* tengah - sidebar/navbar */
+  --bg-card: #1a1f30;              /* teratas - card/modal */
+  --bg-card-glass: rgba(26, 31, 48, 0.7);
+  --bg-subtle: rgba(255, 255, 255, 0.05);
+  --bg-input: rgba(255, 255, 255, 0.06);
+
+  /* Aurora gradient background (Lumina signature) */
+  --bg-aurora: radial-gradient(
+    ellipse 80% 60% at 20% -10%, rgba(99, 102, 241, 0.14), transparent 60%
+  ), radial-gradient(
+    ellipse 70% 50% at 85% 110%, rgba(139, 92, 246, 0.10), transparent 60%
+  ), var(--bg-main);
+
+  /* Text colors (lembut, anti-fatigue) */
+  --text-main: #e6e9f2;
+  --text-gray: #8b93a7;
+  --text-dim: #5a6378;
+
+  /* Border (2-tier) */
+  --border-color: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+
+  /* Shadow (berwarna — indigo-violet glow) */
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 12px 32px rgba(99, 102, 241, 0.18), 0 4px 8px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 24px rgba(139, 92, 246, 0.25);
+
+  /* Modal & navbar */
+  --modal-bg: var(--bg-card);
+  --navbar-bg: rgba(20, 24, 38, 0.85);
+
+  /* Typography */
+  --font-family: 'Plus Jakarta Sans', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --transition-speed: 0.3s;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+}
+
+/* ===== Light Mode (kalau user switch theme) ===== */
+[data-theme="light"] {
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-subtle: rgba(0, 0, 0, 0.03);
+  --bg-input: #f1f5f9;
+  --text-main: #1e293b;
+  --text-gray: #64748b;
+  --border-color: rgba(0, 0, 0, 0.08);
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.05);
+  --shadow-hover: 0 15px 40px rgba(99, 102, 241, 0.1);
+  --modal-bg: #ffffff;
+  --navbar-bg: rgba(255, 255, 255, 0.8);
+}
+
+/* ===== BODY: pakai aurora gradient ===== */
+body {
+  background: var(--bg-aurora);
+  background-attachment: fixed;
+}
+
+/* ===== CARD: dual-tone top highlight ===== */
+.card {
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    transparent 30%
+  ), var(--bg-card);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-card);
+}
+.card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-hover);
+}
+
+/* ===== BUTTON: indigo-violet gradient ===== */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  box-shadow: 0 4px 12px var(--primary-glow);
+}
+.btn-primary:hover {
+  box-shadow: 0 8px 20px var(--primary-glow);
+}
+
+/* ===== INPUT FOCUS RING ===== */
+.form-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
+}
+
+/* ===== SELECTION ===== */
+::selection {
+  background: rgba(99, 102, 241, 0.35);
+  color: #fff;
+}
+
+/* ===== SIDEBAR ACTIVE ===== */
+.sidebar-nav a.active {
+  background: linear-gradient(135deg,
+    rgba(99, 102, 241, 0.15),
+    rgba(139, 92, 246, 0.08)
+  );
+  color: var(--primary);
+  border-left: 3px solid var(--primary);
+  box-shadow: inset 0 0 20px rgba(99, 102, 241, 0.05);
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+  background: var(--navbar-bg);
+  backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* ===== ZONE COLORING per halaman (mood halus) ===== */
+#page-home,
+#page-missions {
+  background: radial-gradient(
+    ellipse 100% 70% at 50% 0%,
+    rgba(99, 102, 241, 0.10),
+    transparent 55%
+  );
+}
+#page-shop {
+  background: radial-gradient(
+    ellipse 100% 70% at 50% 0%,
+    rgba(251, 191, 36, 0.08),
+    transparent 55%
+  );
+}
+#page-treasure {
+  background: radial-gradient(
+    ellipse 100% 70% at 50% 0%,
+    rgba(52, 211, 153, 0.08),
+    transparent 55%
+  );
+}
+#page-assessment,
+#page-exam {
+  background: radial-gradient(
+    ellipse 100% 70% at 50% 0%,
+    rgba(248, 113, 113, 0.10),
+    transparent 55%
+  );
+}
+#page-aicoach {
+  background: radial-gradient(
+    ellipse 100% 70% at 50% 0%,
+    rgba(139, 92, 246, 0.10),
+    transparent 55%
+  );
+}
+
+/* ===== INTRO OVERLAY (jika ada) — gunakan Lumina orb style ===== */
+.intro-overlay {
+  background: radial-gradient(circle at center, #1e1b4b 0%, #0b0d14 100%);
+}
+
+/* ===== SCROLLBAR PREMIUM berwarna ===== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--primary), var(--accent));
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* ===== HEADING — pakai Lumina gradient ===== */
+.hero-title span,
+.text-gradient {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ===== XP/LEVEL — pakai accent violet ===== */
+.stat-item strong,
+.summary-card .value {
+  background: linear-gradient(135deg, var(--accent-light), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ===== PROGRESS BAR — indigo-violet gradient ===== */
+.progress-fill {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+}

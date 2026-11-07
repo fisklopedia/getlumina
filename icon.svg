@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="orb" cx="50%" cy="42%" r="32%">
+      <stop offset="0%" stop-color="#c4b5fd"/>
+      <stop offset="40%" stop-color="#a78bfa"/>
+      <stop offset="80%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="50%" cy="42%" r="50%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.5"/>
+      <stop offset="60%" stop-color="#6366f1" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12"/>
+    </filter>
+    <filter id="softBlur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="115" fill="#0b0d14"/>
+
+  <!-- Outer glow halo -->
+  <circle cx="256" cy="220" r="200" fill="url(#halo)" filter="url(#blur)"/>
+
+  <!-- Main orb -->
+  <circle cx="256" cy="220" r="160" fill="url(#orb)"/>
+
+  <!-- Top highlight (specular) -->
+  <ellipse cx="256" cy="170" rx="110" ry="45" fill="white" opacity="0.35" filter="url(#softBlur)"/>
+  <ellipse cx="246" cy="160" rx="40" ry="20" fill="white" opacity="0.6" filter="url(#softBlur)"/>
+
+  <!-- Sparkle rays -->
+  <g opacity="0.85" stroke="white" stroke-width="4" stroke-linecap="round">
+    <line x1="256" y1="30" x2="256" y2="55"/>
+    <line x1="256" y1="385" x2="256" y2="410"/>
+    <line x1="30" y1="220" x2="55" y2="220"/>
+    <line x1="457" y1="220" x2="482" y2="220"/>
+    <line x1="95" y1="60" x2="113" y2="78"/>
+    <line x1="399" y1="60" x2="417" y2="78"/>
+    <line x1="95" y1="380" x2="113" y2="362"/>
+    <line x1="399" y1="380" x2="417" y2="362"/>
+  </g>
+</svg>
