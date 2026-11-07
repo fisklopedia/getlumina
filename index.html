@@ -100,7 +100,7 @@
       font-size: 0.95rem;
       cursor: pointer;
       box-shadow: 0 6px 24px var(--lumina-glow);
-      display: none;
+      display: flex; /* SELALU tampil — default flex, bukan none */
       align-items: center;
       gap: 8px;
       font-family: inherit;
@@ -114,9 +114,16 @@
     #lumina-install-btn:active {
       transform: scale(0.96);
     }
+    #lumina-install-btn.is-ready {
+      animation: luminaInstallPulse 1.5s ease-in-out infinite, luminaInstallGlow 1s ease-in-out infinite;
+    }
     @keyframes luminaInstallPulse {
       0%, 100% { box-shadow: 0 6px 24px var(--lumina-glow); }
       50%      { box-shadow: 0 8px 32px rgba(139, 92, 246, 0.7); }
+    }
+    @keyframes luminaInstallGlow {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.05); }
     }
     @media (max-width: 768px) {
       #lumina-install-btn {
@@ -126,6 +133,105 @@
         font-size: 0.9rem;
       }
     }
+
+    /* ===== MODAL INSTALASI MANUAL ===== */
+    #lumina-install-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 10002;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      animation: luminaModalFade 0.3s ease;
+    }
+    #lumina-install-modal.show {
+      display: flex;
+    }
+    @keyframes luminaModalFade {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    #lumina-install-modal .modal-content {
+      background: linear-gradient(135deg, #1a1f30, #141826);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 16px;
+      padding: 28px 24px;
+      max-width: 420px;
+      width: 100%;
+      color: #e6e9f2;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(99, 102, 241, 0.1);
+      animation: luminaModalSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes luminaModalSlide {
+      from { transform: translateY(20px) scale(0.95); opacity: 0; }
+      to   { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    #lumina-install-modal h2 {
+      margin: 0 0 8px;
+      font-size: 1.3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a78bfa, #6366f1);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    #lumina-install-modal .modal-orb {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 12px;
+      display: block;
+    }
+    #lumina-install-modal .step {
+      background: rgba(255,255,255,0.04);
+      border-left: 3px solid #6366f1;
+      padding: 10px 12px;
+      margin: 10px 0;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    #lumina-install-modal .step b { color: #a78bfa; }
+    #lumina-install-modal .platform-tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      background: rgba(255,255,255,0.05);
+      padding: 4px;
+      border-radius: 10px;
+    }
+    #lumina-install-modal .platform-tab {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      color: #8b93a7;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border-radius: 7px;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    #lumina-install-modal .platform-tab.active {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+    }
+    #lumina-install-modal .close-btn {
+      width: 100%;
+      margin-top: 14px;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.08);
+      color: #e6e9f2;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    #lumina-install-modal .close-btn:hover { background: rgba(255,255,255,0.12); }
 
     /* ===== LOADING SPLASH — Lumina orb animation ===== */
     #lumina-splash {
@@ -346,6 +452,72 @@
     💡 Pasang Lumina
   </button>
 
+  <!-- ===== MODAL INSTALASI MANUAL (muncul kalau tombol diklik & belum installable) ===== -->
+  <div id="lumina-install-modal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <img src="./icon-192.png" alt="Lumina" class="modal-orb" />
+      <h2 style="text-align:center;">Pasang Lumina</h2>
+      <p style="text-align:center; color:#8b93a7; font-size:0.85rem; margin:4px 0 16px;">
+        Install Lumina sebagai aplikasi native di perangkat Anda
+      </p>
+
+      <div class="platform-tabs">
+        <button class="platform-tab active" data-platform="android">🤖 Android</button>
+        <button class="platform-tab" data-platform="ios">📱 iPhone/iPad</button>
+        <button class="platform-tab" data-platform="desktop">💻 Desktop</button>
+      </div>
+
+      <div id="platform-android" class="platform-content">
+        <div class="step">
+          <b>1. Buka menu Chrome</b><br>
+          Tap ikon titik tiga <b>⋮</b> di pojok kanan atas browser.
+        </div>
+        <div class="step">
+          <b>2. Pilih "Install application"</b><br>
+          Atau "Add to Home screen" → tap <b>Install</b>.
+        </div>
+        <div class="step">
+          <b>3. Selesai!</b><br>
+          Icon Lumina muncul di home screen → buka seperti aplikasi native.
+        </div>
+      </div>
+
+      <div id="platform-ios" class="platform-content" style="display:none;">
+        <div class="step">
+          <b>1. Tap tombol Share</b><br>
+          Ikon kotak panah atas <b>⎋</b> di toolbar Safari (bawah atau atas).
+        </div>
+        <div class="step">
+          <b>2. Pilih "Add to Home Screen"</b><br>
+          Scroll ke bawah, tap <b>Add to Home Screen</b>.
+        </div>
+        <div class="step">
+          <b>3. Tap "Add"</b><br>
+          Icon Lumina muncul di home screen → buka fullscreen seperti app native.
+        </div>
+      </div>
+
+      <div id="platform-desktop" class="platform-content" style="display:none;">
+        <div class="step">
+          <b>1. Buka menu Chrome</b><br>
+          Klik ikon titik tiga <b>⋮</b> di pojok kanan atas.
+        </div>
+        <div class="step">
+          <b>2. Pilih "Install Lumina"</b><br>
+          Atau klik ikon install <b>⊕</b> di address bar (kanan URL).
+        </div>
+        <div class="step">
+          <b>3. Klik Install</b><br>
+          Lumina jalan di window terpisah, ada di taskbar & Start Menu/Dock.
+        </div>
+      </div>
+
+      <button class="close-btn" onclick="document.getElementById('lumina-install-modal').classList.remove('show')">
+        Tutup
+      </button>
+    </div>
+  </div>
+
   <!-- ===== SW REGISTRATION ===== -->
   <script>
     (function () {
@@ -380,78 +552,127 @@
           });
       });
 
-      // ===== INSTALL PROMPT (Android Chrome) =====
+      // ===== INSTALL PROMPT (Android Chrome & Desktop Chrome/Edge) =====
       var deferredPrompt = null;
       var installBtn = document.getElementById('lumina-install-btn');
+      var installModal = document.getElementById('lumina-install-modal');
 
-      window.addEventListener('beforeinstallprompt', function (e) {
-        e.preventDefault();
-        deferredPrompt = e;
+      // Deteksi platform user
+      var ua = navigator.userAgent || '';
+      var isIOS = /iphone|ipad|ipod/i.test(ua);
+      var isAndroid = /android/i.test(ua);
+      var isDesktop = !isIOS && !isAndroid && (/windows|mac|linux/i.test(ua) || window.innerWidth >= 1024);
+      var isStandalone =
+        window.matchMedia('(display-mode: standalone)').matches ||
+        window.matchMedia('(display-mode: fullscreen)').matches ||
+        window.navigator.standalone === true;
 
-        var isStandalone =
-          window.matchMedia('(display-mode: standalone)').matches ||
-          window.navigator.standalone === true;
-        if (isStandalone) return;
+      // Sembunyikan tombol kalau sudah standalone (installed)
+      if (isStandalone) {
+        installBtn.style.display = 'none';
+        console.log('[Lumina PWA] Running in standalone mode (already installed)');
+      }
 
-        installBtn.style.display = 'flex';
-        console.log('[Lumina PWA] App installable. Tombol install ditampilkan.');
-      });
+      // Deteksi: kalau iOS, default aktifkan tab iOS di modal
+      if (isIOS) {
+        document.querySelector('.platform-tab[data-platform="ios"]').click();
+      } else if (isAndroid) {
+        document.querySelector('.platform-tab[data-platform="android"]').click();
+      } else if (isDesktop) {
+        document.querySelector('.platform-tab[data-platform="desktop"]').click();
+      }
 
-      installBtn.addEventListener('click', function () {
-        if (!deferredPrompt) {
-          showIOSHint();
-          return;
-        }
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(function (choice) {
-          if (choice.outcome === 'accepted') {
-            console.log('[Lumina PWA] User accepted install');
-            installBtn.style.display = 'none';
-          } else {
-            console.log('[Lumina PWA] User dismissed install');
-          }
-          deferredPrompt = null;
+      // Tab switching di modal
+      document.querySelectorAll('.platform-tab').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          // Remove active dari semua tab
+          document.querySelectorAll('.platform-tab').forEach(function (t) {
+            t.classList.remove('active');
+          });
+          // Hide semua content
+          document.querySelectorAll('.platform-content').forEach(function (c) {
+            c.style.display = 'none';
+          });
+          // Aktifkan tab & content yang dipilih
+          tab.classList.add('active');
+          var platform = tab.getAttribute('data-platform');
+          document.getElementById('platform-' + platform).style.display = 'block';
         });
       });
 
+      // Listen beforeinstallprompt — simpan event
+      window.addEventListener('beforeinstallprompt', function (e) {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Tandai tombol sebagai "ready" (glow lebih intens)
+        installBtn.classList.add('is-ready');
+        installBtn.innerHTML = '💡 Install Sekarang';
+        console.log('[Lumina PWA] App installable via beforeinstallprompt');
+      });
+
+      // Klik tombol install
+      installBtn.addEventListener('click', function () {
+        // Kalau sudah installed, jangan lakukan apa-apa
+        if (isStandalone) {
+          installBtn.style.display = 'none';
+          return;
+        }
+
+        // Kalau beforeinstallprompt available → trigger native install
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then(function (choice) {
+            if (choice.outcome === 'accepted') {
+              console.log('[Lumina PWA] User accepted install');
+              installBtn.style.display = 'none';
+            } else {
+              console.log('[Lumina PWA] User dismissed install');
+            }
+            deferredPrompt = null;
+            installBtn.classList.remove('is-ready');
+            installBtn.innerHTML = '💡 Pasang Lumina';
+          });
+        } else {
+          // Fallback: tampilkan modal instruksi manual
+          installModal.classList.add('show');
+        }
+      });
+
+      // Klik di luar modal → tutup
+      installModal.addEventListener('click', function (e) {
+        if (e.target === installModal) {
+          installModal.classList.remove('show');
+        }
+      });
+
+      // ESC key → tutup modal
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && installModal.classList.contains('show')) {
+          installModal.classList.remove('show');
+        }
+      });
+
+      // Setelah app terinstall
       window.addEventListener('appinstalled', function () {
         console.log('[Lumina PWA] App installed successfully');
         installBtn.style.display = 'none';
+        installModal.classList.remove('show');
       });
 
-      // ===== iOS HINT =====
-      function showIOSHint() {
-        if (sessionStorage.getItem('lumina_ios_hint_shown')) return;
-        sessionStorage.setItem('lumina_ios_hint_shown', '1');
-
-        var existing = document.getElementById('lumina-ios-hint');
-        if (existing) existing.remove();
-
-        var hint = document.createElement('div');
-        hint.id = 'lumina-ios-hint';
-        hint.innerHTML =
-          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-weight:700;">' +
-          '💡 Pasang Lumina di iPhone</div>' +
-          '<div style="color:#8b93a7;">Tap <b>Share</b> ' +
-          '<span style="font-size:1.1em;">⎋</span> di Safari → pilih <b>Add to Home Screen</b></div>' +
-          '<button onclick="this.parentElement.remove()" style="margin-top:10px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;border:none;padding:8px 14px;border-radius:8px;font-weight:600;cursor:pointer;width:100%;font-family:inherit;">Mengerti</button>';
-        document.body.appendChild(hint);
-        setTimeout(function () {
-          if (hint.parentElement) hint.remove();
-        }, 20000);
-      }
-
-      // Deteksi iOS — tampilkan hint otomatis setelah 5 detik
-      var isIOS = /(iphone|ipad|ipod)/i.test(navigator.userAgent);
-      var isStandalone =
-        window.matchMedia('(display-mode: standalone)').matches ||
-        window.navigator.standalone === true;
+      // ===== iOS AUTO-OPEN MODAL (otomatis tampil setelah 8 detik di iPhone) =====
+      // iOS tidak support beforeinstallprompt → user harus manual via Share menu.
+      // Setelah 8 detik, kalau iOS & belum installed & belum pernah tampilkan modal
+      // → auto buka modal dengan tab iOS aktif.
       if (isIOS && !isStandalone) {
         setTimeout(function () {
-          if (!sessionStorage.getItem('lumina_ios_hint_shown')) {
-            showIOSHint();
+          if (!sessionStorage.getItem('lumina_ios_modal_shown') && !installModal.classList.contains('show')) {
+            sessionStorage.setItem('lumina_ios_modal_shown', '1');
+            // Aktifkan tab iOS
+            var iosTab = document.querySelector('.platform-tab[data-platform="ios"]');
+            if (iosTab) iosTab.click();
+            installModal.classList.add('show');
           }
-        }, 5000);
+        }, 8000);
       }
 
       // ===== ONLINE/OFFLINE INDICATOR =====
