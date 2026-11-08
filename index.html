@@ -29,20 +29,32 @@
   <meta property="og:image" content="./og-image.png" />
 
   <style>
+    :root {
+      --lumina-indigo: #6366f1;
+      --lumina-violet: #8b5cf6;
+      --lumina-light: #a78bfa;
+      --lumina-bg: #0f111a;
+      --lumina-bg-card: rgba(26, 30, 46, 0.8);
+      --lumina-text: #f3f4f6;
+      --lumina-text-gray: #9ca3af;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     html, body {
-      margin: 0;
-      padding: 0;
       width: 100%;
       height: 100%;
-      background-color: #0b0d14;
+      background-color: var(--lumina-bg);
       overflow: hidden;
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     }
 
+    /* Iframe container — full screen, no gap */
     .iframe-container {
       width: 100%;
       height: 100dvh;
       overflow: hidden;
+      /* Padding untuk safe area iPhone X+ */
       padding-top: env(safe-area-inset-top);
       padding-bottom: env(safe-area-inset-bottom);
       padding-left: env(safe-area-inset-left);
@@ -55,146 +67,226 @@
       width: 100%;
       height: 100%;
       border: none;
+      background-color: var(--lumina-bg); /* match app bg */
     }
 
-    /* Tombol Install PWA — pojok kanan atas, kecil, tidak mengganggu */
-    #btn-install {
-      position: fixed;
-      top: calc(env(safe-area-inset-top, 0px) + 12px);
-      right: 12px;
-      z-index: 9999;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6);
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 12px;
-      font-size: 13px;
-      font-weight: 700;
-      font-family: inherit;
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
-      cursor: pointer;
-      display: none; /* default hidden, only show when installable */
-      align-items: center;
-      gap: 6px;
-      transition: transform .15s ease, box-shadow .15s ease;
-    }
-    #btn-install:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.55);
-    }
-    #btn-install:active { transform: scale(0.95); }
-    #btn-install svg { width: 16px; height: 16px; }
-
-    /* Splash screen minimal — cepat hilang */
+    /* ===== SPLASH SCREEN — premium Lumina orb ===== */
     #lumina-splash {
       position: fixed;
       inset: 0;
-      background: #0b0d14;
+      background: var(--lumina-bg);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 20px;
       z-index: 10000;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
       overflow: hidden;
     }
+
+    /* Aurora gradient bg di splash */
     #lumina-splash::before {
       content: '';
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 60% 50% at 20% 20%, rgba(99, 102, 241, 0.12), transparent 60%),
-        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(139, 92, 246, 0.10), transparent 60%);
+        radial-gradient(ellipse 70% 50% at 25% 15%, rgba(99, 102, 241, 0.18), transparent 60%),
+        radial-gradient(ellipse 70% 50% at 75% 85%, rgba(139, 92, 246, 0.12), transparent 60%);
+      animation: auroraDrift 15s ease-in-out infinite alternate;
     }
+    @keyframes auroraDrift {
+      0%   { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(3%, -3%) scale(1.08); }
+    }
+
     #lumina-splash.hide {
       opacity: 0;
       visibility: hidden;
     }
+
+    /* Orb logo — glowing animation */
     .splash-orb {
       position: relative;
-      width: 100px;
-      height: 100px;
+      width: 110px;
+      height: 110px;
       z-index: 1;
-      animation: orbPop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      animation: orbPop 1s cubic-bezier(0.34, 1.56, 0.64, 1) both;
     }
     .splash-orb img {
       width: 100%;
       height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.6));
-      animation: orbGlow 2s ease-in-out infinite alternate 0.9s;
+      animation: orbGlow 2.5s ease-in-out infinite alternate 1s;
     }
     @keyframes orbPop {
-      0%   { opacity: 0; transform: scale(0.4); }
-      60%  { opacity: 1; transform: scale(1.1); }
+      0%   { opacity: 0; transform: scale(0.3); }
+      60%  { opacity: 1; transform: scale(1.15); }
       100% { opacity: 1; transform: scale(1); }
     }
     @keyframes orbGlow {
-      from { filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.6)); }
-      to   { filter: drop-shadow(0 0 45px rgba(139, 92, 246, 0.9)); }
+      from { filter: drop-shadow(0 0 25px rgba(99, 102, 241, 0.5)); }
+      to   { filter: drop-shadow(0 0 45px rgba(139, 92, 246, 0.85)); }
     }
+
+    /* Orbital ring around logo */
+    .splash-orb::after {
+      content: '';
+      position: absolute;
+      inset: -15px;
+      border: 2px solid transparent;
+      border-top-color: rgba(99, 102, 241, 0.4);
+      border-right-color: rgba(139, 92, 246, 0.3);
+      border-radius: 50%;
+      animation: ringSpin 3s linear infinite;
+    }
+    @keyframes ringSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Title — gradient shine */
     .splash-title {
       position: relative;
       z-index: 1;
       color: white;
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 900;
-      letter-spacing: 6px;
+      letter-spacing: 8px;
       margin: 0;
-      background: linear-gradient(90deg, #c4b5fd, #a78bfa, #c4b5fd);
+      background: linear-gradient(90deg, #a78bfa, #c4b5fd, #a78bfa);
       background-size: 200% auto;
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: titleShine 3s linear infinite, titleFade 0.8s ease 0.3s both;
+      animation: titleShine 3s linear infinite, titleFade 0.8s ease 0.4s both;
     }
     @keyframes titleShine { to { background-position: 200% center; } }
     @keyframes titleFade {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(15px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+
+    /* Tagline EN */
     .splash-tagline {
       position: relative;
       z-index: 1;
-      color: rgba(167, 139, 250, 0.8);
-      font-size: 0.75rem;
+      color: rgba(167, 139, 250, 0.85);
+      font-size: 0.8rem;
       font-weight: 500;
       letter-spacing: 3px;
       margin: 0;
       text-transform: uppercase;
       animation: titleFade 0.8s ease 0.7s both;
     }
-    .splash-spinner {
+
+    /* Tagline ID */
+    .splash-tagline-id {
       position: relative;
       z-index: 1;
-      width: 22px;
-      height: 22px;
-      border: 2px solid rgba(255,255,255,0.15);
-      border-top-color: #a78bfa;
-      border-radius: 50%;
-      animation: spin 0.9s linear infinite;
-      margin-top: 4px;
+      color: rgba(196, 181, 253, 0.6);
+      font-size: 0.72rem;
+      font-style: italic;
+      letter-spacing: 1px;
+      margin: 0;
+      animation: titleFade 0.8s ease 0.9s both;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Loading bar */
+    .splash-loader {
+      position: relative;
+      z-index: 1;
+      width: 120px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .splash-loader::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 40%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, var(--lumina-indigo), var(--lumina-violet), transparent);
+      border-radius: 99px;
+      animation: loaderSlide 1.5s ease-in-out infinite;
+    }
+    @keyframes loaderSlide {
+      0%   { transform: translateX(-100%); }
+      100% { transform: translateX(350%); }
+    }
+
+    /* ===== INSTALL BUTTON — minimal, top-right ===== */
+    #btn-install {
+      position: fixed;
+      top: calc(env(safe-area-inset-top, 0px) + 12px);
+      right: 12px;
+      z-index: 9999;
+      background: linear-gradient(135deg, var(--lumina-indigo), var(--lumina-violet));
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: inherit;
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      gap: 6px;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    #btn-install:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 28px rgba(99, 102, 241, 0.55);
+    }
+    #btn-install:active { transform: scale(0.95); }
+    #btn-install svg { width: 16px; height: 16px; }
+
+    /* ===== OFFLINE BANNER ===== */
+    #offline-banner {
+      position: fixed;
+      top: env(safe-area-inset-top);
+      left: 0;
+      right: 0;
+      z-index: 10001;
+      background: linear-gradient(135deg, #ef4444, #f87171);
+      color: white;
+      padding: 8px 16px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transform: translateY(-100%);
+      transition: transform 0.3s ease;
+    }
+    #offline-banner.show { transform: translateY(0); }
   </style>
 </head>
 <body>
 
-  <!-- Splash Screen minimal -->
+  <!-- Splash Screen -->
   <div id="lumina-splash">
-    <div class="splash-orb"><img src="./icon-512.png" alt="Lumina" /></div>
+    <div class="splash-orb">
+      <img src="./icon-512.png" alt="Lumina" />
+    </div>
     <h1 class="splash-title">LUMINA</h1>
     <p class="splash-tagline">Illuminate Your Mind</p>
-    <div class="splash-spinner"></div>
+    <p class="splash-tagline-id">Cahaya Pengetahuan</p>
+    <div class="splash-loader"></div>
   </div>
 
-  <!-- Tombol Install PWA — muncul hanya saat installable -->
+  <!-- Offline Banner -->
+  <div id="offline-banner">📡 Anda sedang offline — beberapa fitur mungkin terbatas</div>
+
+  <!-- Install Button -->
   <button id="btn-install" aria-label="Install Lumina">
     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zM12 2l5.5 5.5-1.41 1.41L13 5.83V16h-2V5.83L7.91 8.91 6.5 7.5 12 2z"/></svg>
     Install Lumina
   </button>
 
+  <!-- Iframe — Apps Script app -->
   <div class="iframe-container">
     <iframe
       id="app"
@@ -217,37 +309,35 @@
         if (hidden) return;
         hidden = true;
         splash.classList.add('hide');
-        setTimeout(function() { if (splash.parentElement) splash.remove(); }, 600);
+        setTimeout(function() { if (splash.parentElement) splash.remove(); }, 700);
       }
       iframe.addEventListener('load', hideSplash);
-      setTimeout(hideSplash, 5000); // fallback max 5 detik
+      // Fallback: hide splash setelah 6 detik
+      setTimeout(hideSplash, 6000);
     })();
 
-    // ===== PWA: Register Service Worker =====
+    // ===== Service Worker =====
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
         navigator.serviceWorker.register('./sw.js')
           .then(function(reg) {
             console.log('[Lumina PWA] SW registered:', reg.scope);
-            // Cek update SW
             reg.addEventListener('updatefound', function() {
               var newWorker = reg.installing;
               if (!newWorker) return;
               newWorker.addEventListener('statechange', function() {
                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  console.log('[Lumina PWA] New version — reloading...');
                   setTimeout(function() { window.location.reload(); }, 500);
                 }
               });
             });
-            // Update SW saat app kembali ke foreground
             window.addEventListener('focus', function() { reg.update(); });
           })
           .catch(function(err) { console.warn('[Lumina PWA] SW failed:', err); });
       });
     }
 
-    // ===== PWA: Install Prompt =====
+    // ===== Install Prompt =====
     var deferredPrompt = null;
     var btnInstall = document.getElementById('btn-install');
 
@@ -255,34 +345,35 @@
       e.preventDefault();
       deferredPrompt = e;
       btnInstall.style.display = 'flex';
-      console.log('[Lumina PWA] Install prompt ready');
+      console.log('[Lumina PWA] Install ready');
     });
 
     btnInstall.addEventListener('click', function() {
       if (!deferredPrompt) {
-        // Fallback: alert instruksi manual
         var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
         if (isIOS) {
-          alert('💡 Pasang Lumina di iPhone/iPad:\n\n1. Tap tombol Share (⎋)\n2. Pilih "Add to Home Screen"\n3. Tap "Add"');
+          alert('💡 Pasang Lumina di iPhone:\n\n1. Tap Share (⎋)\n2. Add to Home Screen\n3. Tap Add');
         } else {
-          alert('💡 Pasang Lumina di Android:\n\n1. Tap menu ⋮ (pojok kanan atas Chrome)\n2. Pilih "Install app" atau "Add to Home screen"\n3. Tap "Install"');
+          alert('💡 Pasang Lumina:\n\n1. Tap menu ⋮\n2. Pilih "Install app"\n3. Tap Install');
         }
         return;
       }
       deferredPrompt.prompt();
       deferredPrompt.userChoice.then(function(choice) {
-        if (choice.outcome === 'accepted') {
-          console.log('[Lumina PWA] User installed');
-        }
         deferredPrompt = null;
         btnInstall.style.display = 'none';
       });
     });
 
     window.addEventListener('appinstalled', function() {
-      console.log('[Lumina PWA] App installed');
       btnInstall.style.display = 'none';
     });
+
+    // ===== Offline indicator =====
+    var offlineBanner = document.getElementById('offline-banner');
+    window.addEventListener('online', function() { offlineBanner.classList.remove('show'); });
+    window.addEventListener('offline', function() { offlineBanner.classList.add('show'); });
+    if (!navigator.onLine) { offlineBanner.classList.add('show'); }
   </script>
 </body>
 </html>
