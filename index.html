@@ -70,7 +70,7 @@
       background-color: var(--lumina-bg); /* match app bg */
     }
 
-    /* ===== SPLASH SCREEN — premium Lumina orb ===== */
+    /* ===== SPLASH SCREEN — Lumina horizontal logo ===== */
     #lumina-splash {
       position: fixed;
       inset: 0;
@@ -79,7 +79,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 16px;
       z-index: 10000;
       transition: opacity 0.6s ease, visibility 0.6s ease;
       overflow: hidden;
@@ -105,68 +105,32 @@
       visibility: hidden;
     }
 
-    /* Orb logo — glowing animation */
-    .splash-orb {
+    /* Horizontal logo wrapper */
+    .splash-logo-wrap {
       position: relative;
-      width: 110px;
-      height: 110px;
       z-index: 1;
-      animation: orbPop 1s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      max-width: 320px;
+      width: 80vw;
+      animation: logoFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
-    .splash-orb img {
+    .splash-logo-img {
       width: 100%;
-      height: 100%;
-      object-fit: contain;
-      animation: orbGlow 2.5s ease-in-out infinite alternate 1s;
+      height: auto;
+      display: block;
+      border-radius: 16px;
+      animation: logoGlow 2.5s ease-in-out infinite alternate 1s;
     }
-    @keyframes orbPop {
-      0%   { opacity: 0; transform: scale(0.3); }
-      60%  { opacity: 1; transform: scale(1.15); }
-      100% { opacity: 1; transform: scale(1); }
+    @keyframes logoFadeIn {
+      0%   { opacity: 0; transform: scale(0.85) translateY(20px); }
+      60%  { opacity: 1; transform: scale(1.02) translateY(0); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
     }
-    @keyframes orbGlow {
-      from { filter: drop-shadow(0 0 25px rgba(99, 102, 241, 0.5)); }
-      to   { filter: drop-shadow(0 0 45px rgba(139, 92, 246, 0.85)); }
-    }
-
-    /* Orbital ring around logo */
-    .splash-orb::after {
-      content: '';
-      position: absolute;
-      inset: -15px;
-      border: 2px solid transparent;
-      border-top-color: rgba(99, 102, 241, 0.4);
-      border-right-color: rgba(139, 92, 246, 0.3);
-      border-radius: 50%;
-      animation: ringSpin 3s linear infinite;
-    }
-    @keyframes ringSpin {
-      to { transform: rotate(360deg); }
+    @keyframes logoGlow {
+      from { filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.4)); }
+      to   { filter: drop-shadow(0 0 35px rgba(139, 92, 246, 0.7)); }
     }
 
-    /* Title — gradient shine (saturated brand colors: indigo → violet → indigo) */
-    .splash-title {
-      position: relative;
-      z-index: 1;
-      color: white;
-      font-size: 2.2rem;
-      font-weight: 900;
-      letter-spacing: 8px;
-      margin: 0;
-      background: linear-gradient(90deg, #6366f1, #8b5cf6, #6366f1);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: titleShine 3s linear infinite, titleFade 0.8s ease 0.4s both;
-    }
-    @keyframes titleShine { to { background-position: 200% center; } }
-    @keyframes titleFade {
-      from { opacity: 0; transform: translateY(15px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Tagline EN — light violet untuk readability, tetap dalam keluarga brand */
+    /* Tagline EN */
     .splash-tagline {
       position: relative;
       z-index: 1;
@@ -189,6 +153,11 @@
       letter-spacing: 1px;
       margin: 0;
       animation: titleFade 0.8s ease 0.9s both;
+    }
+
+    @keyframes titleFade {
+      from { opacity: 0; transform: translateY(15px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     /* Loading bar */
@@ -266,12 +235,11 @@
 </head>
 <body>
 
-  <!-- Splash Screen -->
+  <!-- Splash Screen — pakai horizontal logo (orb + LUMINA wordmark) -->
   <div id="lumina-splash">
-    <div class="splash-orb">
-      <img src="./icon-512.png" alt="Lumina" />
+    <div class="splash-logo-wrap">
+      <img src="./lumina-logo-full.jpg" alt="Lumina — Illuminate Your Mind" class="splash-logo-img" />
     </div>
-    <h1 class="splash-title">LUMINA</h1>
     <p class="splash-tagline">Illuminate Your Mind</p>
     <p class="splash-tagline-id">Cahaya Pengetahuan</p>
     <div class="splash-loader"></div>
