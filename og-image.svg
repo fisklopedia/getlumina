@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="45%" r="80%">
+      <stop offset="0%" stop-color="#2A1A5E"/>
+      <stop offset="50%" stop-color="#1E1147"/>
+      <stop offset="100%" stop-color="#0F0A26"/>
+    </radialGradient>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="75%">
+      <stop offset="60%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.5"/>
+    </radialGradient>
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#C4B1F0" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#B8A6E8" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#B8A6E8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="orb" cx="36%" cy="32%" r="78%">
+      <stop offset="0%" stop-color="#F4EDF8"/>
+      <stop offset="40%" stop-color="#D8CCEC"/>
+      <stop offset="75%" stop-color="#B6A4DC"/>
+      <stop offset="100%" stop-color="#9A87C9"/>
+    </radialGradient>
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Subtle aurora gradient overlay for depth -->
+  <ellipse cx="300" cy="200" rx="500" ry="200" fill="#6366f1" opacity="0.06"/>
+  <ellipse cx="950" cy="500" rx="450" ry="180" fill="#8b5cf6" opacity="0.05"/>
+
+  <!-- Halo around orb -->
+  <circle cx="186" cy="290" r="140" fill="url(#halo)" filter="url(#softGlow)"/>
+
+  <!-- Main orb -->
+  <circle cx="186" cy="290" r="70" fill="url(#orb)"/>
+
+  <!-- Subtle rim -->
+  <circle cx="186" cy="290" r="70" fill="none"
+          stroke="#7C68A8" stroke-opacity="0.22" stroke-width="2"/>
+
+  <!-- LUMINA wordmark -->
+  <g transform="translate(316,355.0) scale(0.185714,-0.185714)" fill="#A99BD6"><g transform="translate(0.000,0)"><path d="M233 132H457V0H62V702H233Z"/></g><g transform="translate(527.000,0)"><path d="M230 702V282Q230 219 261.0 185.0Q292 151 352 151Q412 151 444.0 185.0Q476 219 476 282V702H647V283Q647 189 607.0 124.0Q567 59 499.5 26.0Q432 -7 349 -7Q266 -7 200.5 25.5Q135 58 97.0 123.5Q59 189 59 283V702Z"/></g><g transform="translate(1282.000,0)"><path d="M857 702V0H686V421L529 0H391L233 422V0H62V702H264L461 216L656 702Z"/></g><g transform="translate(2250.000,0)"><path d="M233 702V0H62V702Z"/></g><g transform="translate(2595.000,0)"><path d="M690 0H519L233 433V0H62V702H233L519 267V702H690Z"/></g><g transform="translate(3397.000,0)"><path d="M499 124H237L195 0H16L270 702H468L722 0H541ZM455 256 368 513 282 256Z"/></g></g>
+
+  <!-- Tagline -->
+  <g transform="translate(297.24,470) scale(0.040000,-0.040000)" fill="#C4B1F0"><g transform="translate(0.000,0)"><path d="M233 702V0H62V702Z"/></g><g transform="translate(475.000,0)"><path d="M233 132H457V0H62V702H233Z"/></g><g transform="translate(1132.000,0)"><path d="M233 132H457V0H62V702H233Z"/></g><g transform="translate(1789.000,0)"><path d="M230 702V282Q230 219 261.0 185.0Q292 151 352 151Q412 151 444.0 185.0Q476 219 476 282V702H647V283Q647 189 607.0 124.0Q567 59 499.5 26.0Q432 -7 349 -7Q266 -7 200.5 25.5Q135 58 97.0 123.5Q59 189 59 283V702Z"/></g><g transform="translate(2674.000,0)"><path d="M857 702V0H686V421L529 0H391L233 422V0H62V702H264L461 216L656 702Z"/></g><g transform="translate(3772.000,0)"><path d="M233 702V0H62V702Z"/></g><g transform="translate(4247.000,0)"><path d="M690 0H519L233 433V0H62V702H233L519 267V702H690Z"/></g><g transform="translate(5179.000,0)"><path d="M499 124H237L195 0H16L270 702H468L722 0H541ZM455 256 368 513 282 256Z"/></g><g transform="translate(6096.000,0)"><path d="M567 702V565H381V0H210V565H24V702Z"/></g><g transform="translate(6867.000,0)"><path d="M233 565V423H462V291H233V137H492V0H62V702H492V565Z"/></g><g transform="translate(7980.000,0)"><path d="M664 702 421 232V0H250V232L7 702H201L337 408L472 702Z"/></g><g transform="translate(8831.000,0)"><path d="M33 353Q33 456 81.5 538.0Q130 620 212.5 666.0Q295 712 394 712Q493 712 575.5 666.0Q658 620 705.5 538.0Q753 456 753 353Q753 250 705.0 167.5Q657 85 575.0 39.0Q493 -7 394 -7Q295 -7 212.5 39.0Q130 85 81.5 167.5Q33 250 33 353ZM579 353Q579 446 528.5 501.5Q478 557 394 557Q309 557 258.5 502.0Q208 447 208 353Q208 260 258.5 204.5Q309 149 394 149Q478 149 528.5 205.0Q579 261 579 353Z"/></g><g transform="translate(9797.000,0)"><path d="M230 702V282Q230 219 261.0 185.0Q292 151 352 151Q412 151 444.0 185.0Q476 219 476 282V702H647V283Q647 189 607.0 124.0Q567 59 499.5 26.0Q432 -7 349 -7Q266 -7 200.5 25.5Q135 58 97.0 123.5Q59 189 59 283V702Z"/></g><g transform="translate(10682.000,0)"><path d="M420 0 274 265H233V0H62V702H349Q432 702 490.5 673.0Q549 644 578.0 593.5Q607 543 607 481Q607 411 567.5 356.0Q528 301 451 278L613 0ZM233 386H339Q386 386 409.5 409.0Q433 432 433 474Q433 514 409.5 537.0Q386 560 339 560H233Z"/></g><g transform="translate(11906.000,0)"><path d="M857 702V0H686V421L529 0H391L233 422V0H62V702H264L461 216L656 702Z"/></g><g transform="translate(13004.000,0)"><path d="M233 702V0H62V702Z"/></g><g transform="translate(13479.000,0)"><path d="M690 0H519L233 433V0H62V702H233L519 267V702H690Z"/></g><g transform="translate(14411.000,0)"><path d="M693 351Q693 248 647.5 168.0Q602 88 518.5 44.0Q435 0 325 0H62V702H325Q436 702 519.0 658.0Q602 614 647.5 534.5Q693 455 693 351ZM519 351Q519 448 465.0 502.0Q411 556 314 556H233V148H314Q411 148 465.0 201.0Q519 254 519 351Z"/></g></g>
+
+  <!-- Vignette -->
+  <rect width="1200" height="630" fill="url(#vignette)"/>
+</svg>
