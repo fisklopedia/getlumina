@@ -9,7 +9,7 @@
  * 3. CDN libraries (Chart.js, jsPDF, dll) → stale-while-revalidate
  * ============================================================ */
 
-const CACHE_NAME = 'lumina-pwa-v2';
+const CACHE_NAME = 'lumina-pwa-v3';
 const APP_SHELL = [
   './',
   './index.html',
